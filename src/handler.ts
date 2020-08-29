@@ -52,7 +52,7 @@ export const logStreamsCleanupGroupHandler = async (event: {groupName: string}):
   }
 }
 
-export const logStreamsCleanupStreams = async (event: {
+export const logStreamsCleanupStreamsHandler = async (event: {
   groupName: string
   streams: CloudWatchLogs.LogStreams
 }): Promise<void> => {
