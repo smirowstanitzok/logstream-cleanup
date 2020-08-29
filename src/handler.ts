@@ -85,7 +85,8 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
     maxRetries: 15
   })
 
-  console.log(`Delete ${stream.logStreamName}`)
+  console.log(`Delete ${groupName}/${stream.logStreamName}`)
+
   try {
     await client.deleteLogStream(request).promise()
   } catch (error) {
