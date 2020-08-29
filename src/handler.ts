@@ -81,8 +81,16 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
     logStreamName: stream.logStreamName
   }
 
+  const client = new CloudWatchLogs({
+    maxRetries: 15
+  })
+
   console.log(`Delete ${stream.logStreamName}`)
-  await this.client.deleteLogStream(request).promise()
+  try {
+    await client.deleteLogStream(request).promise()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 async function invokeGroup(groupName: string): Promise<void> {
