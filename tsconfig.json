@@ -1,0 +1,22 @@
+{
+  "include": ["./src"],
+  "exclude": ["node-modules"],
+  "compilerOptions": {
+    "outDir": "./build",
+    "target": "es2019",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "allowJs": true,
+    "checkJs": false,
+    "lib": ["dom", "es2019", "es2020.bigint", "es2020.string", "es2020.symbol.wellknown", "esnext"],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUnusedParameters": true,
+    "noUnusedLocals": true
+  },
+  "typeAcquisition": {
+    "enable": true
+  }
+}
