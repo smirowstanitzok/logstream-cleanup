@@ -1,0 +1,69 @@
+service:
+  name: logstream-cleanup
+
+plugins:
+  - serverless-webpack
+
+custom:
+  # Define how often the clean up should run
+  cleanupRate: rate(1 day)
+
+  # Configure how many days logs of this job should be saved
+  logRetentionInDays: 5
+
+  # Configure how many hours empty log streams should be kept after creation
+  keepNewEmptyStreamsInHours: 2
+
+  webpack:
+    includeModules:
+      forceExclude:
+        - aws-sdk
+
+provider:
+  name: aws
+  stackName: logstream-cleanup
+  runtime: nodejs12.x
+  versionFunctions: false
+  region: ${opt:region, 'us-east-1'}
+  logRetentionInDays: ${self:custom.logRetentionInDays}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - lambda:InvokeFunction
+        - lambda:InvokeAsync
+      Resource: '*'
+    - Effect: Allow
+      Action:
+        - logs:DescribeLogGroups
+      Resource: 'arn:aws:logs:*:*:log-group:*'
+    - Effect: Allow
+      Action:
+        - logs:DeleteLogStream
+        - logs:DescribeLogStreams
+      Resource: 'arn:aws:logs:*:*:log-group:/aws/lambda/*'
+
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    keepStreams: ${self:custom.keepNewEmptyStreamsInHours}
+
+functions:
+  logStreamsCleanupDispatch:
+    name: logstream-cleanup-dispatch
+    description: Entry point for scheduled logstream cleanup
+    handler: src/handler.logStreamsCleanupDispatch
+    timeout: 900
+    events:
+      - schedule:
+          rate: ${self:custom.cleanupRate}
+          enabled: true
+          name: logStreamsCleanup
+  logStreamsCleanupGroup:
+    name: logstream-cleanup-group-handler
+    description: Handler for a single group
+    handler: src/handler.logStreamsCleanupGroupHandler
+    timeout: 900
+  logStreamsCleanupStreams:
+    name: logstream-cleanup-streams-handler
+    description: Handler for a group of single streams
+    handler: src/handler.logStreamsCleanupStreamsHandler
+    timeout: 900

@@ -1,0 +1,22 @@
+name: Pull Request CI/CD
+
+on: pull_request
+
+jobs:
+  primary:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [12]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install dependencies
+        run: npm install
+      - name: Build
+        run: rm -rf ./build/ && tsc --project tsconfig.json
+      - name: Lint
+        run: npx eslint src/**/*.ts

@@ -1,0 +1,29 @@
+{
+  "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
+  "rebaseStalePrs": true,
+  "ignoreNpmrcFile": true,
+  "packageRules": [
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "depTypeList": ["devDependencies"],
+      "excludePackagePatterns": ["^serverless$"],
+      "schedule": ["before 2am on tuesday"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "aws-sdk",
+      "packagePatterns": ["aws-sdk"],
+      "schedule": ["before 2am on monday"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "types",
+      "packagePatterns": ["@types"],
+      "schedule": ["before 2am on monday"]
+    }
+  ],
+  "labels": ["dependencies"]
+}

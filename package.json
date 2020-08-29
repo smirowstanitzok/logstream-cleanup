@@ -1,0 +1,46 @@
+{
+  "name": "logstream-cleanup",
+  "version": "1.0.0",
+  "description": "Scheduled removal of LogStreams in AWS Cloudwatch",
+  "scripts": {
+    "deploy": "npx sls deploy",
+    "remove": "npx sls remove"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/smirowstanitzok/logstream-cleanup.git"
+  },
+  "keywords": [
+    "AWS",
+    "cloudwatch",
+    "logstreams",
+    "logevents",
+    "scheduled",
+    "removal"
+  ],
+  "author": "Sascha Mirow-Stanitzok",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/smirowstanitzok/logstream-cleanup/issues"
+  },
+  "homepage": "https://github.com/smirowstanitzok/logstream-cleanup#readme",
+  "devDependencies": {
+    "@types/chai": "4.2.12",
+    "@types/mocha": "8.0.3",
+    "@types/node": "12.12.54",
+    "@types/sinon": "9.0.5",
+    "aws-sdk": "2.631.0",
+    "chai": "4.2.0",
+    "eslint": "7.7.0",
+    "fork-ts-checker-webpack-plugin": "5.1.0",
+    "mocha": "8.1.1",
+    "prettier": "2.1.0",
+    "serverless": "1.79.0",
+    "serverless-webpack": "5.3.4",
+    "sinon": "9.0.3",
+    "ts-loader": "8.0.3",
+    "ts-node": "8.10.2",
+    "typescript": "4.0.2",
+    "webpack": "4.44.1"
+  }
+}
