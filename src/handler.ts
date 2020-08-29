@@ -52,7 +52,7 @@ export const logStreamsCleanupGroupHandler = async (event: {groupName: string}):
   }
 }
 
-export const logStreamsCleanupStreams = async (event: {
+export const logStreamsCleanupStreamsHandler = async (event: {
   groupName: string
   streams: CloudWatchLogs.LogStreams
 }): Promise<void> => {
@@ -81,8 +81,16 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
     logStreamName: stream.logStreamName
   }
 
-  console.log(`Delete ${stream.logStreamName}`)
-  await this.client.deleteLogStream(request).promise()
+  const client = new CloudWatchLogs({
+    maxRetries: 15
+  })
+
+  console.log(`Delete ${groupName}/${stream.logStreamName}`)
+  try {
+    await client.deleteLogStream(request).promise()
+  } catch (error) {
+    console.error(error)
+  }
 }
 
 async function invokeGroup(groupName: string): Promise<void> {
