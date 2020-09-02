@@ -1,6 +1,6 @@
 ![](https://devtoday-assets.s3.eu-central-1.amazonaws.com/devtoday_cl.png)
 
-![](https://img.shields.io/david/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/issues/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/license/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/package-json/v/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/badge/Code-TypeScript-informational?style=flat&logo=typescript&logoColor=white&color=2bbc8a)
+![](https://img.shields.io/david/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/issues/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/license/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/package-json/v/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/badge/Code-TypeScript-informational?style=flat&logo=typescript&logoColor=white&color=2bbc8a) ![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smirowstanitzok_logstream-cleanup&metric=alert_status)
 
 # Scheduled removal of LogStreams in AWS Cloudwatch
 
@@ -22,9 +22,9 @@ If you have not an access key and secret log in to AWS IAM and create a user: ht
 
 Ensure the user has 'Programmatic access' and **at least** following permissions:
 
--   AWSLambdaFullAccess
--   CloudFrontFullAccess
--   CloudWatchLogsFullAccess
+- AWSLambdaFullAccess
+- CloudFrontFullAccess
+- CloudWatchLogsFullAccess
 
 \*For the serverless user, it makes most sense to grant **_AdministratorAccess_** authorization. if you don't have a problem with it, you should always do that\*
 
