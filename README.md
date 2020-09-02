@@ -1,6 +1,10 @@
-![](https://devtoday-assets.s3.eu-central-1.amazonaws.com/devtoday_cl.png)
+<img src="https://devtoday-assets.s3.eu-central-1.amazonaws.com/devtoday_cl.png" width="400">
+
+<hr>
 
 ![](https://img.shields.io/david/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/issues/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/license/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/github/package-json/v/smirowstanitzok/logstream-cleanup) ![](https://img.shields.io/badge/Code-TypeScript-informational?style=flat&logo=typescript&logoColor=white&color=2bbc8a) ![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=smirowstanitzok_logstream-cleanup&metric=alert_status)
+
+<hr>
 
 # Scheduled removal of LogStreams in AWS Cloudwatch
 
