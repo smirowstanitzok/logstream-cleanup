@@ -6,6 +6,7 @@
     {
       "automerge": true,
       "automergeType": "pr",
+      "baseBranches": ["release"],
       "depTypeList": ["devDependencies"],
       "excludePackagePatterns": ["^serverless$"],
       "schedule": ["before 2am on tuesday"]
@@ -13,6 +14,7 @@
     {
       "automerge": true,
       "automergeType": "pr",
+      "baseBranches": ["release"],
       "groupName": "aws-sdk",
       "packagePatterns": ["aws-sdk"],
       "schedule": ["before 2am on monday"]
@@ -20,6 +22,7 @@
     {
       "automerge": true,
       "automergeType": "pr",
+      "baseBranches": ["release"],
       "groupName": "types",
       "packagePatterns": ["@types"],
       "schedule": ["before 2am on monday"]
