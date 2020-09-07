@@ -97,7 +97,7 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
 async function invokeGroup(groupName: string): Promise<void> {
   const lambda = new Lambda()
 
-  const invokationRequest: AWS.Lambda.InvocationRequest = {
+  const invokationRequest: Lambda.InvocationRequest = {
     FunctionName: 'logstream-cleanup-group-handler',
     InvocationType: 'Event',
     Payload: JSON.stringify({groupName})
@@ -108,7 +108,7 @@ async function invokeGroup(groupName: string): Promise<void> {
 async function invokeStreams(streams: CloudWatchLogs.LogStreams, groupName: string): Promise<void> {
   const lambda = new Lambda()
 
-  const invokationRequest: AWS.Lambda.InvocationRequest = {
+  const invokationRequest: Lambda.InvocationRequest = {
     FunctionName: 'logstream-cleanup-streams-handler',
     InvocationType: 'Event',
     Payload: JSON.stringify({groupName, streams})
