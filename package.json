@@ -31,7 +31,7 @@
     "@types/sinon": "9.0.5",
     "@typescript-eslint/eslint-plugin": "4.1.1",
     "@typescript-eslint/parser": "4.1.1",
-    "aws-sdk": "2.757.0",
+    "aws-sdk": "2.761.0",
     "chai": "4.2.0",
     "eslint": "7.9.0",
     "eslint-config-standard": "14.1.1",
