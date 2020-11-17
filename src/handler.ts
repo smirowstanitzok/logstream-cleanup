@@ -58,7 +58,7 @@ export const logStreamsCleanupStreamsHandler = async (event: {
 }): Promise<void> => {
   await Promise.all(
     event.streams.map((stream) => {
-      handleStream(stream, event.groupName)
+      return handleStream(stream, event.groupName)
     })
   )
 }
