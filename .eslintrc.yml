@@ -9,4 +9,4 @@ parserOptions:
   sourceType: module
 plugins:
   - '@typescript-eslint'
-rules: {object-curly-spacing: 0, space-before-function-paren: 0}
+rules: {object-curly-spacing: 0, space-before-function-paren: 0, indent: ['error', 4]}

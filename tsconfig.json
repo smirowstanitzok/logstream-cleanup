@@ -14,7 +14,8 @@
     "resolveJsonModule": true,
     "noFallthroughCasesInSwitch": true,
     "noUnusedParameters": true,
-    "noUnusedLocals": true
+    "noUnusedLocals": true,
+    "strict": true
   },
   "typeAcquisition": {
     "enable": true
