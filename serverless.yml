@@ -1,5 +1,4 @@
-service:
-  name: logstream-cleanup
+service: logstream-cleanup
 
 plugins:
   - serverless-webpack
