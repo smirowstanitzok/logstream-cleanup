@@ -18,7 +18,7 @@ custom:
 provider:
   name: aws
   stackName: logstream-cleanup
-  runtime: nodejs12.x
+  runtime: nodejs14.x
   versionFunctions: false
   region: ${opt:region, 'us-east-1'}
   logRetentionInDays: ${self:custom.logRetentionInDays}
