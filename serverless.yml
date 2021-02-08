@@ -1,10 +1,5 @@
 service: logstream-cleanup
 
-plugins:
-  - serverless-webpack
-
-frameworkVersion: '>=1.0.0 <2.0.0'
-
 custom:
   # Define how often the clean up should run
   cleanupRate: rate(1 day)
