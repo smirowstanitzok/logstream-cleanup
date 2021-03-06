@@ -22,21 +22,23 @@ provider:
   versionFunctions: false
   region: ${opt:region, 'us-east-1'}
   logRetentionInDays: ${self:custom.logRetentionInDays}
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - lambda:InvokeFunction
-        - lambda:InvokeAsync
-      Resource: '*'
-    - Effect: Allow
-      Action:
-        - logs:DescribeLogGroups
-      Resource: 'arn:aws:logs:*:*:log-group:*'
-    - Effect: Allow
-      Action:
-        - logs:DeleteLogStream
-        - logs:DescribeLogStreams
-      Resource: 'arn:aws:logs:*:*:log-group:/aws/lambda/*'
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - lambda:InvokeFunction
+            - lambda:InvokeAsync
+          Resource: '*'
+        - Effect: Allow
+          Action:
+            - logs:DescribeLogGroups
+          Resource: 'arn:aws:logs:*:*:log-group:*'
+        - Effect: Allow
+          Action:
+            - logs:DeleteLogStream
+            - logs:DescribeLogStreams
+          Resource: 'arn:aws:logs:*:*:log-group:/aws/lambda/*'
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1

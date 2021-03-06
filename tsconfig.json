@@ -1,23 +1,19 @@
 {
-  "include": ["./src"],
+  "include": ["./src", "./test"],
   "exclude": ["node-modules"],
   "compilerOptions": {
-    "outDir": "./build",
-    "target": "es2020",
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["ES2020"],
     "module": "commonjs",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "allowJs": true,
-    "checkJs": false,
-    "lib": ["dom", "es2020", "esnext"],
-    "esModuleInterop": true,
-    "resolveJsonModule": true,
+    "noEmit": true,
     "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
     "noUnusedParameters": true,
     "noUnusedLocals": true,
-    "strict": true
-  },
-  "typeAcquisition": {
-    "enable": true
+    "sourceMap": true,
+    "strict": true,
+    "target": "ES2020"
   }
 }
