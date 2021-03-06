@@ -1,6 +1,6 @@
 import {CloudWatchLogs, Lambda} from 'aws-sdk'
 
-export const logStreamsCleanupDispatch = async (): Promise<void> => {
+export async function logStreamsCleanupDispatch(): Promise<void> {
     const logGroupQuery: CloudWatchLogs.DescribeLogGroupsRequest = {
         logGroupNamePrefix: '/aws/lambda/'
     }
@@ -15,7 +15,7 @@ export const logStreamsCleanupDispatch = async (): Promise<void> => {
         return Promise.resolve()
     }
 
-    await Promise.all(response.logGroups.map((group) => invokeGroup(group.logGroupName)))
+    await Promise.all(response.logGroups.map(async (group) => invokeGroup(group.logGroupName)))
 
     while (response.nextToken !== undefined) {
         const queryNext: CloudWatchLogs.DescribeLogGroupsRequest = {
@@ -29,11 +29,11 @@ export const logStreamsCleanupDispatch = async (): Promise<void> => {
             return Promise.resolve()
         }
 
-        await Promise.all(response.logGroups.map((group) => invokeGroup(group.logGroupName)))
+        await Promise.all(response.logGroups.map(async (group) => invokeGroup(group.logGroupName)))
     }
 }
 
-export const logStreamsCleanupGroupHandler = async (event: {groupName: string}): Promise<void> => {
+export async function logStreamsCleanupGroupHandler(event: {groupName: string}): Promise<void> {
     const client = new CloudWatchLogs({
         maxRetries: 15
     })
@@ -42,6 +42,7 @@ export const logStreamsCleanupGroupHandler = async (event: {groupName: string}):
         logGroupName: event.groupName
     }
 
+    // eslint-disable-next-line no-console
     console.log(`Handling group ${event.groupName}`)
 
     let response = await client.describeLogStreams(logStreamQuery).promise()
@@ -66,12 +67,12 @@ export const logStreamsCleanupGroupHandler = async (event: {groupName: string}):
     }
 }
 
-export const logStreamsCleanupStreamsHandler = async (event: {
+export async function logStreamsCleanupStreamsHandler(event: {
     groupName: string
     streams: CloudWatchLogs.LogStreams
-}): Promise<void> => {
+}): Promise<void> {
     await Promise.all(
-        event.streams.map((stream) => {
+        event.streams.map(async (stream) => {
             return handleStream(stream, event.groupName)
         })
     )
@@ -87,11 +88,12 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
         return
     }
 
-    if (process.env.keepStreams === undefined) {
+    if (process.env['keepStreams'] !== undefined) {
         return Promise.reject(new Error('Missing env variavle keepStreams'))
     }
 
-    const hours: number = parseInt(process.env.keepStreams)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const hours: number = parseInt(process.env['keepStreams']!)
 
     if (datediff < 1000 * 60 * 60 * hours) {
         return
@@ -106,11 +108,13 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
         maxRetries: 15
     })
 
+    // eslint-disable-next-line no-console
     console.log(`Delete ${groupName}/${stream.logStreamName}`)
 
     try {
         await client.deleteLogStream(request).promise()
     } catch (error) {
+        // eslint-disable-next-line no-console
         console.error(error)
     }
 }
