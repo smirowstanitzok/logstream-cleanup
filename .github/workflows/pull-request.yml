@@ -5,6 +5,7 @@ on: pull_request
 jobs:
   primary:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v2
       - name: Use Node.js 14.x
