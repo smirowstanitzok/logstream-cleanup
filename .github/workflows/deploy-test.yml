@@ -23,6 +23,6 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: rm -rf ./build/ && npx tsc --project tsconfig.json
+        run: npx tsc
       - name: Lint
         run: npx eslint src/**/*.ts
