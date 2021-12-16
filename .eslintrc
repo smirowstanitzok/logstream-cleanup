@@ -1,47 +1,53 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
-  "parserOptions": {
-    "ecmaVersion": 2020,
-    "project": "./tsconfig.eslint.json",
-    "sourceType": "module"
-  },
+  "plugins": ["chai-expect", "@typescript-eslint", "mocha"],
+  "extends": [
+    "eslint:recommended",
+    "plugin:chai-expect/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ],
+  "parserOptions": {"ecmaVersion": 2020, "project": "./tsconfig.json", "sourceType": "module"},
   "rules": {
-    "no-console": "warn",
-    "no-warning-comments": "warn",
+    "curly": "error",
+    "mocha/no-exclusive-tests": "error",
+    "no-console": "error",
+    "no-restricted-imports": ["error", {"patterns": ["**/dist/**"]}],
+    "no-return-await": "off",
+    "no-warning-comments": "error",
     "semi": ["error", "never"],
     "sort-imports": "off",
-    "sort-keys": [
-      "error",
-      "asc",
-      {
-        "caseSensitive": false,
-        "natural": true
-      }
-    ],
-    "@typescript-eslint/ban-ts-comment": [
-      "error",
-      {
-        "ts-expect-error": "allow-with-description"
-      }
-    ],
+    "sort-keys": ["error", "asc", {"caseSensitive": false, "natural": true}],
+    "@typescript-eslint/ban-ts-comment": ["error", {"ts-expect-error": "allow-with-description"}],
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-    "@typescript-eslint/consistent-type-assertions": [
-      "error",
-      {
-        "assertionStyle": "angle-bracket"
-      }
-    ],
+    "@typescript-eslint/consistent-type-assertions": ["error", {"assertionStyle": "angle-bracket"}],
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/naming-convention": "off",
+    "@typescript-eslint/no-non-null-assertion": "error",
+    "@typescript-eslint/no-parameter-properties": "error",
+    "@typescript-eslint/no-unnecessary-condition": "error",
     "@typescript-eslint/no-unnecessary-qualifier": "error",
     "@typescript-eslint/no-unnecessary-type-assertion": "error",
     "@typescript-eslint/no-unused-vars": "off",
     "@typescript-eslint/prefer-string-starts-ends-with": "error",
     "@typescript-eslint/promise-function-async": "error",
+    "@typescript-eslint/require-await": "error",
     "@typescript-eslint/restrict-plus-operands": "error",
-    "@typescript-eslint/strict-boolean-expressions": "error",
+    "@typescript-eslint/restrict-template-expressions": "off",
+    "@typescript-eslint/return-await": ["error", "in-try-catch"],
+    "@typescript-eslint/strict-boolean-expressions": [
+      "error",
+      {
+        "allowAny": false,
+        "allowNullableBoolean": false,
+        "allowNullableNumber": false,
+        "allowNullableObject": false,
+        "allowNullableString": false,
+        "allowNumber": false,
+        "allowString": false
+      }
+    ],
     "@typescript-eslint/unified-signatures": "error"
   }
 }
