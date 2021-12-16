@@ -14,7 +14,9 @@ jobs:
           node-version: 14.x
       - name: Install dependencies
         run: npm install
+      - name: Check Prettier
+        run: npx prettier --check .
       - name: Build
         run: npx tsc
       - name: Lint
-        run: npx eslint src/**/*.ts
+        run: npx eslint 'src/**/*.ts'

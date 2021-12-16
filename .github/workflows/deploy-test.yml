@@ -25,4 +25,4 @@ jobs:
       - name: Build
         run: npx tsc
       - name: Lint
-        run: npx eslint src/**/*.ts
+        run: npx eslint 'src/**/*.ts'
