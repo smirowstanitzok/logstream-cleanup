@@ -28,7 +28,7 @@
     "@types/node": "16.11.27",
     "@typescript-eslint/eslint-plugin": "5.19.0",
     "@typescript-eslint/parser": "5.19.0",
-    "aws-sdk": "2.1111.0",
+    "aws-sdk": "2.1116.0",
     "eslint": "8.12.0",
     "eslint-plugin-chai-expect": "3.0.0",
     "eslint-plugin-mocha": "10.0.3",
