@@ -31,7 +31,7 @@
     "aws-sdk": "2.1184.0",
     "eslint": "8.20.0",
     "eslint-plugin-chai-expect": "3.0.0",
-    "eslint-plugin-mocha": "10.0.5",
+    "eslint-plugin-mocha": "10.1.0",
     "prettier": "2.7.1",
     "serverless": "3.21.0",
     "serverless-webpack": "5.7.1",
