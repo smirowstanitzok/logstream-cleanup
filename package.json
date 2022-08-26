@@ -25,9 +25,9 @@
   },
   "homepage": "https://github.com/smirowstanitzok/logstream-cleanup#readme",
   "devDependencies": {
-    "@types/node": "16.11.49",
-    "@typescript-eslint/eslint-plugin": "5.33.1",
-    "@typescript-eslint/parser": "5.33.1",
+    "@types/node": "16.11.56",
+    "@typescript-eslint/eslint-plugin": "5.35.1",
+    "@typescript-eslint/parser": "5.35.1",
     "aws-sdk": "2.1195.0",
     "eslint": "8.22.0",
     "eslint-plugin-chai-expect": "3.0.0",
