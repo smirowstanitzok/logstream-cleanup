@@ -1,26 +1,73 @@
 {
   "parser": "@typescript-eslint/parser",
-  "plugins": ["chai-expect", "@typescript-eslint", "mocha"],
+  "plugins": ["chai-expect", "mocha", "@typescript-eslint"],
   "extends": [
     "eslint:recommended",
     "plugin:chai-expect/recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking"
   ],
-  "parserOptions": {"ecmaVersion": 2020, "project": "./tsconfig.json", "sourceType": "module"},
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "project": "./tsconfig.json",
+    "sourceType": "module"
+  },
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "rules": {
+        "@typescript-eslint/explicit-function-return-type": ["error"]
+      }
+    },
+    {
+      "files": ["*.spec.ts"],
+      "rules": {
+        "@typescript-eslint/no-misused-promises": [
+          "error",
+          {
+            "checksVoidReturn": false
+          }
+        ]
+      }
+    }
+  ],
   "rules": {
     "curly": "error",
     "mocha/no-exclusive-tests": "error",
     "no-console": "error",
-    "no-restricted-imports": ["error", {"patterns": ["**/dist/**"]}],
+    "no-constant-binary-expression": "error",
+    "no-restricted-imports": [
+      "error",
+      {
+        "patterns": ["**/dist/**", "!@frnde/*/dist/*"]
+      }
+    ],
     "no-return-await": "off",
     "no-warning-comments": "error",
     "semi": ["error", "never"],
     "sort-imports": "off",
-    "sort-keys": ["error", "asc", {"caseSensitive": false, "natural": true}],
-    "@typescript-eslint/ban-ts-comment": ["error", {"ts-expect-error": "allow-with-description"}],
+    "sort-keys": [
+      "error",
+      "asc",
+      {
+        "caseSensitive": false,
+        "natural": true
+      }
+    ],
+    "@typescript-eslint/ban-ts-comment": [
+      "error",
+      {
+        "ts-expect-error": "allow-with-description"
+      }
+    ],
     "@typescript-eslint/consistent-type-definitions": ["error", "interface"],
-    "@typescript-eslint/consistent-type-assertions": ["error", {"assertionStyle": "angle-bracket"}],
+    "@typescript-eslint/consistent-type-assertions": [
+      "error",
+      {
+        "assertionStyle": "angle-bracket"
+      }
+    ],
+    "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/member-delimiter-style": "off",
     "@typescript-eslint/member-ordering": "warn",
     "@typescript-eslint/naming-convention": "off",

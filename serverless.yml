@@ -1,5 +1,10 @@
 service: logstream-cleanup
 
+plugins:
+  - serverless-esbuild
+
+configValidationMode: error
+
 custom:
   # Define how often the clean up should run
   cleanupRate: rate(1 day)
@@ -10,15 +15,20 @@ custom:
   # Configure how many hours empty log streams should be kept after creation
   keepNewEmptyStreamsInHours: 2
 
-  webpack:
-    includeModules:
-      forceExclude:
-        - aws-sdk
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: true
+
+package:
+  individually: true
 
 provider:
+  architecture: arm64
+  deploymentMethod: direct
   name: aws
   stackName: logstream-cleanup
-  runtime: nodejs14.x
+  runtime: nodejs18.x
   versionFunctions: false
   region: ${opt:region, 'us-east-1'}
   logRetentionInDays: ${self:custom.logRetentionInDays}
@@ -42,6 +52,8 @@ provider:
 
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    NODE_OPTIONS: --enable-source-maps
+    STAGE: ${sls:stage}
     keepStreams: ${self:custom.keepNewEmptyStreamsInHours}
 
 functions:
