@@ -1,84 +1,13 @@
-import {CloudWatchLogs, Lambda} from 'aws-sdk'
+import {
+    CloudWatchLogsClient,
+    DeleteLogStreamCommand,
+    LogStream,
+    paginateDescribeLogGroups,
+    paginateDescribeLogStreams
+} from '@aws-sdk/client-cloudwatch-logs'
+import {InvokeCommand, LambdaClient} from '@aws-sdk/client-lambda'
 
-export async function logStreamsCleanupDispatch(): Promise<void> {
-    const logGroupQuery: CloudWatchLogs.DescribeLogGroupsRequest = {
-        logGroupNamePrefix: '/aws/lambda/'
-    }
-
-    const client = new CloudWatchLogs({
-        maxRetries: 15
-    })
-
-    let response = await client.describeLogGroups(logGroupQuery).promise()
-
-    if (response.logGroups === undefined) {
-        return Promise.resolve()
-    }
-
-    await Promise.all(response.logGroups.map(async (group) => invokeGroup(group.logGroupName)))
-
-    while (response.nextToken !== undefined) {
-        const queryNext: CloudWatchLogs.DescribeLogGroupsRequest = {
-            logGroupNamePrefix: '/aws/lambda/',
-            nextToken: response.nextToken
-        }
-
-        response = await client.describeLogGroups(queryNext).promise()
-
-        if (response.logGroups === undefined) {
-            return Promise.resolve()
-        }
-
-        await Promise.all(response.logGroups.map(async (group) => invokeGroup(group.logGroupName)))
-    }
-}
-
-export async function logStreamsCleanupGroupHandler(event: {groupName: string}): Promise<void> {
-    const client = new CloudWatchLogs({
-        maxRetries: 15
-    })
-
-    const logStreamQuery: CloudWatchLogs.DescribeLogStreamsRequest = {
-        logGroupName: event.groupName
-    }
-
-    // eslint-disable-next-line no-console
-    console.log(`Handling group ${event.groupName}`)
-
-    let response = await client.describeLogStreams(logStreamQuery).promise()
-
-    if (response.logStreams === undefined) {
-        return Promise.resolve()
-    }
-
-    await invokeStreams(response.logStreams, event.groupName)
-
-    while (response.nextToken !== undefined) {
-        const queryNext: CloudWatchLogs.DescribeLogStreamsRequest = {
-            logGroupName: event.groupName,
-            nextToken: response.nextToken
-        }
-
-        response = await client.describeLogStreams(queryNext).promise()
-
-        if (response.logStreams !== undefined) {
-            await invokeStreams(response.logStreams, event.groupName)
-        }
-    }
-}
-
-export async function logStreamsCleanupStreamsHandler(event: {
-    groupName: string
-    streams: CloudWatchLogs.LogStreams
-}): Promise<void> {
-    await Promise.all(
-        event.streams.map(async (stream) => {
-            return handleStream(stream, event.groupName)
-        })
-    )
-}
-
-async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string): Promise<void> {
+async function handleStream(stream: LogStream, groupName: string): Promise<void> {
     if (stream.lastEventTimestamp === undefined || stream.logStreamName === undefined) {
         return Promise.resolve()
     }
@@ -99,47 +28,103 @@ async function handleStream(stream: CloudWatchLogs.LogStream, groupName: string)
         return
     }
 
-    const request: CloudWatchLogs.DeleteLogStreamRequest = {
+    const request = new DeleteLogStreamCommand({
         logGroupName: groupName,
         logStreamName: stream.logStreamName
-    }
+    })
 
-    const client = new CloudWatchLogs({
-        maxRetries: 15
+    const client = new CloudWatchLogsClient({
+        maxAttempts: 15
     })
 
     // eslint-disable-next-line no-console
     console.log(`Delete ${groupName}/${stream.logStreamName}`)
 
     try {
-        await client.deleteLogStream(request).promise()
+        await client.send(request)
     } catch (error) {
         // eslint-disable-next-line no-console
         console.error(error)
     }
 }
 
-async function invokeGroup(groupName?: string): Promise<void> {
-    const lambda = new Lambda()
+async function invokeGroup(args: {client: LambdaClient; logGroupName: string}): Promise<void> {
+    const {client, logGroupName} = args
 
-    if (groupName === undefined) {
-        return Promise.resolve()
-    }
-    const invokationRequest: Lambda.InvocationRequest = {
+    const invokationRequest = new InvokeCommand({
         FunctionName: 'logstream-cleanup-group-handler',
         InvocationType: 'Event',
-        Payload: JSON.stringify({groupName})
-    }
-    await lambda.invoke(invokationRequest).promise()
+        Payload: Buffer.from(JSON.stringify({logGroupName}))
+    })
+    await client.send(invokationRequest)
 }
 
-async function invokeStreams(streams: CloudWatchLogs.LogStreams, groupName: string): Promise<void> {
-    const lambda = new Lambda()
-
-    const invokationRequest: Lambda.InvocationRequest = {
+async function invokeStreams(args: {
+    client: LambdaClient
+    logGroupName: string
+    logStreams: LogStream[]
+}): Promise<void> {
+    const {client, logGroupName, logStreams} = args
+    const invokationRequest = new InvokeCommand({
         FunctionName: 'logstream-cleanup-streams-handler',
         InvocationType: 'Event',
-        Payload: JSON.stringify({groupName, streams})
+        Payload: Buffer.from(JSON.stringify({logGroupName, logStreams}))
+    })
+    await client.send(invokationRequest)
+}
+
+export async function logStreamsCleanupDispatch(): Promise<void> {
+    const client = new CloudWatchLogsClient({maxAttempts: 15})
+    const lambdaClient = new LambdaClient({})
+
+    for await (const page of paginateDescribeLogGroups(
+        {client},
+        {
+            logGroupNamePrefix: '/aws/lambda/'
+        }
+    )) {
+        if (page.logGroups !== undefined) {
+            await Promise.all(
+                page.logGroups.map(async (group) => {
+                    if (group.logGroupName !== undefined) {
+                        await invokeGroup({client: lambdaClient, logGroupName: group.logGroupName})
+                    }
+                })
+            )
+        }
     }
-    await lambda.invoke(invokationRequest).promise()
+}
+
+export async function logStreamsCleanupGroupHandler(event: {groupName: string}): Promise<void> {
+    const client = new CloudWatchLogsClient({maxAttempts: 15})
+    const lambdaClient = new LambdaClient({})
+
+    // eslint-disable-next-line no-console
+    console.log(`Handling group ${event.groupName}`)
+
+    for await (const page of paginateDescribeLogStreams(
+        {client},
+        {
+            logGroupName: event.groupName
+        }
+    )) {
+        if (page.logStreams !== undefined) {
+            await invokeStreams({
+                client: lambdaClient,
+                logGroupName: event.groupName,
+                logStreams: page.logStreams
+            })
+        }
+    }
+}
+
+export async function logStreamsCleanupStreamsHandler(event: {
+    groupName: string
+    streams: LogStream[]
+}): Promise<void> {
+    await Promise.all(
+        event.streams.map(async (stream) => {
+            return handleStream(stream, event.groupName)
+        })
+    )
 }

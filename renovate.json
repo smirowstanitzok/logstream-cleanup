@@ -2,30 +2,42 @@
   "dependencyDashboard": false,
   "extends": ["config:base", ":semanticCommitTypeAll(chore)"],
   "rebaseStalePrs": true,
-  "ignoreNpmrcFile": true,
+  "semanticCommits": "enabled",
   "packageRules": [
     {
       "automerge": true,
       "automergeType": "pr",
-      "depTypeList": ["devDependencies"],
-      "excludePackagePatterns": ["^serverless$"],
-      "schedule": ["before 2am on tuesday"]
+      "matchDepTypes": ["action", "dependencies", "devDependencies"]
     },
     {
+      "allowedVersions": "<=18",
       "automerge": true,
       "automergeType": "pr",
-      "groupName": "aws-sdk",
-      "packagePatterns": ["aws-sdk"],
-      "schedule": ["before 2am on monday"]
+      "groupName": "nodetypes",
+      "matchPackageNames": ["@types/node"]
+    },
+    {
+      "allowedVersions": "3.188.0",
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "aws-sdk-v3",
+      "matchPackagePatterns": ["^@aws-sdk"],
+      "schedule": ["on the 3rd day instance on Sunday"]
     },
     {
       "automerge": true,
       "automergeType": "pr",
       "groupName": "types",
-      "packagePatterns": ["@types"],
-      "schedule": ["before 2am on monday"]
+      "matchPackagePatterns": ["@types/"],
+      "schedule": ["after 2am and before 5am"]
+    },
+    {
+      "automerge": true,
+      "automergeType": "pr",
+      "groupName": "tzdata",
+      "matchPackagePatterns": ["^tzdata"],
+      "schedule": ["after 2am and before 5am"]
     }
   ],
-  "labels": ["dependencies"],
-  "reviewers": ["smirowstanitzok"]
+  "labels": ["dependencies"]
 }
