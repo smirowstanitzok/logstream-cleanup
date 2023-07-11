@@ -41,7 +41,7 @@
     "mocha": "10.2.0",
     "prettier": "3.0.0",
     "serverless": "3.33.0",
-    "serverless-esbuild": "1.45.1",
+    "serverless-esbuild": "1.46.0",
     "typescript": "5.1.6"
   },
   "dependencies": {
