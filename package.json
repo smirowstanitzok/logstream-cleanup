@@ -1,6 +1,6 @@
 {
   "name": "logstream-cleanup",
-  "version": "1.3.16",
+  "version": "1.3.17",
   "description": "Scheduled removal of LogStreams in AWS Cloudwatch",
   "scripts": {
     "deploy": "npx sls deploy",
