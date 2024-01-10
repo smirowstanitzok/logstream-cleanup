@@ -37,7 +37,7 @@
     "eslint-plugin-chai-expect": "3.0.0",
     "eslint-plugin-deprecation": "2.0.0",
     "eslint-plugin-mocha": "10.2.0",
-    "fast-xml-parser": "4.3.2",
+    "fast-xml-parser": "4.3.3",
     "mocha": "10.2.0",
     "prettier": "3.1.1",
     "serverless": "3.38.0",
