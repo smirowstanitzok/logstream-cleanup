@@ -33,7 +33,7 @@
     "chai": "5.1.0",
     "esbuild": "0.20.1",
     "esbuild-register": "3.5.0",
-    "eslint": "8.56.0",
+    "eslint": "8.57.0",
     "eslint-plugin-chai-expect": "3.0.0",
     "eslint-plugin-deprecation": "2.0.0",
     "eslint-plugin-mocha": "10.3.0",
