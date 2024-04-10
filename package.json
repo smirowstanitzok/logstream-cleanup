@@ -42,7 +42,7 @@
     "prettier": "3.2.5",
     "serverless": "3.38.0",
     "serverless-esbuild": "1.52.1",
-    "typescript": "5.4.4"
+    "typescript": "5.4.5"
   },
   "dependencies": {
     "@aws-sdk/client-cloudwatch-logs": "3.188.0",
