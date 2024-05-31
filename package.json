@@ -35,7 +35,7 @@
     "esbuild-register": "3.5.0",
     "eslint": "8.57.0",
     "eslint-plugin-chai-expect": "3.0.0",
-    "eslint-plugin-deprecation": "2.0.0",
+    "eslint-plugin-deprecation": "3.0.0",
     "eslint-plugin-mocha": "10.4.3",
     "fast-xml-parser": "4.3.6",
     "mocha": "10.4.0",
